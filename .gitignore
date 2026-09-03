@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+
+# Gradle wrapper — the jar IS committed on purpose
+!gradle/wrapper/gradle-wrapper.jar
+
+# JVM crash and profiling output
+*.jfr
+*.hprof
+hs_err_pid*.log
+replay_pid*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS
+.DS_Store
