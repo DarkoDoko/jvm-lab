@@ -18,4 +18,24 @@ class ListFactoryTest {
 
         assertThat(result).hasSize(1);
     }
+
+    @Test
+    void listOf_given_a_single_list_argument_aliases_the_source() {
+        List<String> source = new ArrayList<>(List.of("a", "b"));
+
+        var wrapped = List.of(source);
+
+        source.add("c");
+
+        assertThat(wrapped.getFirst()).isSameAs(source);
+        assertThat(wrapped.getFirst()).containsExactly("a", "b", "c");
+
+        //outer list is unmodifiable
+        assertThatThrownBy(() -> wrapped.add(List.of()))
+        .isInstanceOf(UnsupportedOperationException.class);
+
+        //but inner list is modifiable
+        wrapped.getFirst().add("d");
+        assertThat(source).containsExactly("a", "b", "c", "d");
+    }
 }
