@@ -1,7 +1,6 @@
 package dev.lab.mechanics;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -13,8 +12,10 @@ class ListFactoryTest {
     void listOf_given_a_single_list_argument() {
         List<String> source = new ArrayList<>(List.of("a", "b"));
 
+        //List.of(List<T>) returns List<List<T>>.
+        //It's easy to mistakenly believe that we are creating a List<T> when "var" is specified as return variable.
         var result = List.of(source);
 
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(1);
     }
 }
