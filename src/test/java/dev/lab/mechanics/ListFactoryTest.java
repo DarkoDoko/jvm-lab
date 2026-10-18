@@ -1,5 +1,6 @@
 package dev.lab.mechanics;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
@@ -37,5 +38,26 @@ class ListFactoryTest {
         //but inner list is modifiable
         wrapped.getFirst().add("d");
         assertThat(source).containsExactly("a", "b", "c", "d");
+    }
+
+    @Test
+    void unmodifiableList_is_a_view_not_a_copy() {
+        List<String> source = new ArrayList<>(List.of("a", "b"));
+
+        List<String> view = Collections.unmodifiableList(source);
+
+        //cannot change view
+        assertThatThrownBy(() -> view.add("c"))
+                .isInstanceOf(UnsupportedOperationException.class);
+
+        //can change source, and it is visible from the view
+        source.add("c");
+        assertThat(view).containsExactly("a", "b", "c");
+
+        List<String> copiedView = List.copyOf(view);
+        assertThat(copiedView).isNotSameAs(view);
+
+        source.add("d");
+        assertThat(copiedView).containsExactly("a", "b", "c");
     }
 }
