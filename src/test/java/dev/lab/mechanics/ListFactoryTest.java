@@ -60,4 +60,20 @@ class ListFactoryTest {
         source.add("d");
         assertThat(copiedView).containsExactly("a", "b", "c");
     }
+
+    @Test
+    void copyOf_is_independent_of_the_source_and_rejects_mutation() {
+        List<String> source = new ArrayList<>(List.of("a", "b"));
+
+        List<String> copied = List.copyOf(source);
+
+        source.add("c");
+
+        assertThat(source).containsExactly("a", "b", "c");
+        assertThat(copied).containsExactly("a", "b");
+
+        assertThatThrownBy(() -> copied.add("d"))
+                .isInstanceOf(UnsupportedOperationException.class);
+
+    }
 }
